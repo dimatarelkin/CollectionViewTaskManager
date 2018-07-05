@@ -17,10 +17,7 @@
 
 
 
-
-
 @implementation CollectionViewController
-
 
 
 static NSString * const reuseIdentifier = @"Cell";
@@ -41,7 +38,7 @@ static NSString * const reuseHeaderdentifier = @"HeaderCell";
     //register classes for HeaderCell
     [self.collectionView registerClass:[TaskHeaderCell class] forSupplementaryViewOfKind: UICollectionElementKindSectionHeader withReuseIdentifier:reuseHeaderdentifier];
     
-    _taskDataSource = [NSMutableArray arrayWithObjects:@"Buy smth", @"Go for a walk", nil];
+    _taskDataSource = [NSMutableArray array];
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
@@ -52,6 +49,11 @@ static NSString * const reuseHeaderdentifier = @"HeaderCell";
     swipe.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.collectionView addGestureRecognizer:swipe];
 }
+
+
+
+
+#pragma mark - Actions
 
 - (void)addNewTask:(NSString*)taskName {
     [self.taskDataSource addObject:taskName];
@@ -76,14 +78,18 @@ static NSString * const reuseHeaderdentifier = @"HeaderCell";
 
 //SECTION
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    NSLog(@"numberOfSectionsInCollectionView");
     return 1;
 }
 
 //CELL
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    NSLog(@"numberOfItemsInSection");
     return [self.taskDataSource count];
 }
 
+
+#warning Trouble with reusing cells
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     TaskCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
@@ -93,9 +99,14 @@ static NSString * const reuseHeaderdentifier = @"HeaderCell";
     if (!cell) {
         cell = [[TaskCell alloc] init];
         NSLog(@"New cell created");
+    }else {
+        NSLog(@"cell reused %@",cell.taskLabel.text);
     }
+    
     return cell;
 }
+
+
 
 //HEADER
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {

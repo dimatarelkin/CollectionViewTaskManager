@@ -73,7 +73,7 @@
     self.backgroundColor = UIColor.whiteColor;
     self.layer.cornerRadius = 15;
     self.layer.borderWidth = 1;
-    self.layer.borderColor = UIColor.blackColor.CGColor;
+    self.layer.borderColor = UIColor.lightGrayColor.CGColor;
     
     //label
     [self addSubview:self.taskLabel];
