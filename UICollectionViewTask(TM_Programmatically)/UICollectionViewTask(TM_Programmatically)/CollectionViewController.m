@@ -57,6 +57,11 @@ static NSString * const reuseHeaderdentifier = @"HeaderCell";
 
 - (void)addNewTask:(NSString*)taskName {
     [self.taskDataSource addObject:taskName];
+    
+#warning reload
+//    [self.collectionView performBatchUpdates:^{
+//        [self.collectionView reloadData];
+//    } completion:^(BOOL finished) {}];
     [self.collectionView reloadData];
 }
 
@@ -66,7 +71,12 @@ static NSString * const reuseHeaderdentifier = @"HeaderCell";
     NSMutableArray* newData = [NSMutableArray arrayWithArray:self.taskDataSource];
     if (swipe.state == UIGestureRecognizerStateEnded) {
         [newData removeObjectAtIndex:indexPath.item];
+#warning reload
+//        [self.collectionView performBatchUpdates:^{
+//            [self.collectionView reloadData];
+//        } completion:^(BOOL finished) {}];
         [self.collectionView reloadData];
+        
     }
     self.taskDataSource = [NSMutableArray arrayWithArray:newData];
 }
@@ -89,7 +99,7 @@ static NSString * const reuseHeaderdentifier = @"HeaderCell";
 }
 
 
-#warning Trouble with reusing cells
+#warning a little trouble with cell coloring when reusing cells
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     TaskCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
@@ -148,9 +158,11 @@ static NSString * const reuseHeaderdentifier = @"HeaderCell";
 
 #pragma mark <UICollectionViewDelegate>
 
+// CELL MOVEMENT
 - (BOOL)collectionView:(UICollectionView *)collectionView canMoveItemAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
+
 - (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     NSString *item = self.taskDataSource[sourceIndexPath.item];
     [self.taskDataSource removeObjectAtIndex:sourceIndexPath.item];
